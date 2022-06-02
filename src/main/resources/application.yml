@@ -1,0 +1,20 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+wallet-api:
+  base-url: http://localhost:8080
+  client-timeout-duration: 90000
+
+bearer:
+  token:
+    prefix: Bearer
+    secret: GetirReyis
+    expireTimeInMinutes: 720
