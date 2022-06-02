@@ -1,5 +1,6 @@
 package com.selimkundakcioglu.walletapi.exception;
 
+import com.google.gson.Gson;
 import com.selimkundakcioglu.walletapi.invokers.ApiException;
 import com.selimkundakcioglu.walletapi.model.response.Response;
 import com.selimkundakcioglu.walletapi.model.response.ResponseFactory;
@@ -23,11 +24,13 @@ public class RestExceptionHandler {
 
     private final ResponseFactory responseFactory;
     private final MessageSource messageSource;
+    private final Gson gson;
 
     @ExceptionHandler(ApiException.class)
     @ResponseStatus(UNPROCESSABLE_ENTITY)
     public Response<String> handleApiExceptions(ApiException e) {
-        return handleApiException(e, e.getMessage());
+        log.error("{} is caught.", e.getClass().getName());
+        return gson.fromJson(e.getResponseBody(), Response.class);
     }
 
     @ExceptionHandler(BusinessException.class)
@@ -48,10 +51,5 @@ public class RestExceptionHandler {
         log.error("{} is caught.", e.getClass().getName(), e);
         String message = messageSource.getMessage(error, args, Locale.getDefault());
         return responseFactory.response(error, message);
-    }
-
-    private Response<String> handleApiException(ApiException e, String error, Object... args) {
-        log.error("{} is caught.", e.getClass().getName(), e);
-        return responseFactory.response(e.getResponseBody());
     }
 }
