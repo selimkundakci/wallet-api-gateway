@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Locale;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @RestControllerAdvice
@@ -27,7 +28,7 @@ public class RestExceptionHandler {
     private final Gson gson;
 
     @ExceptionHandler(ApiException.class)
-    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ResponseStatus(BAD_REQUEST)
     public Response<String> handleApiExceptions(ApiException e) {
         log.error("{} is caught.", e.getClass().getName());
         return gson.fromJson(e.getResponseBody(), Response.class);
@@ -41,14 +42,14 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public <T> Response<T> handleException(Exception e, HttpServletResponse httpServletResponse) {
-        log.error("{} is caught.", e.getClass().getName(), e);
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        log.error("{} is caught.", e.getClass().getName());
+        HttpStatus httpStatus = BAD_REQUEST;
         httpServletResponse.setStatus(httpStatus.value());
         return responseFactory.response(String.valueOf(httpStatus.value()), httpStatus.getReasonPhrase());
     }
 
     private <T> Response<T> handleAppException(BaseException e, String error, Object... args) {
-        log.error("{} is caught.", e.getClass().getName(), e);
+        log.error("{} is caught.", e.getClass().getName());
         String message = messageSource.getMessage(error, args, Locale.getDefault());
         return responseFactory.response(error, message);
     }

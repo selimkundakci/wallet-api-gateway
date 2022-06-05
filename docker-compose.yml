@@ -1,0 +1,59 @@
+version: "3.9"
+services:
+  #
+  #  wallet-api-gateway:
+  #    build:
+  #      context: ./wallet-api-gateway
+  #      dockerfile: Dockerfile
+  #    ports:
+  #      - "8081:8081"
+  #    depends_on:
+  #      - wallet-api-client
+  #    restart: on-failure
+  #    links:
+  #      - wallet-api-client
+  #    volumes:
+  #      - $HOME/.m2/repository:/root/.m2/repository
+  #  wallet-api:
+  #    build:
+  #      context: ./wallet-api
+  #      dockerfile: Dockerfile
+  #    ports:
+  #      - "8080:8080"
+  #    depends_on:
+  #      - wallet-api-client
+  #      - postgres
+  #      - hazelcast
+  #    restart: on-failure
+  #    volumes:
+  #      - $HOME/.m2/repository:/root/.m2/repository
+  #
+  #  wallet-api-client:
+  #    build:
+  #      context: ./wallet-api-client
+  #      dockerfile: Dockerfile
+  #    volumes:
+  #      - $HOME/.m2/repository:/root/.m2/repository
+
+  postgres:
+    image: postgres:10.5
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  hazelcast:
+    container_name: hazelcast
+    environment:
+      HZ_NETWORK_PUBLICADDRESS: "127.0.0.1:5701"
+      HZ_NETWORK_RESTAPI_ENABLED: "true"
+    image: "hazelcast/hazelcast:4.0.1"
+    ports:
+      - "5701:5701"

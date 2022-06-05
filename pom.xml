@@ -70,6 +70,11 @@
             <version>1.0.9.RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>com.selimkundakcioglu</groupId>
+            <artifactId>wallet-api-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
