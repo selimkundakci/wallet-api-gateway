@@ -14,17 +14,21 @@ so it doesn't have its own user database. ```userId``` and ```phoneNumber``` on 
 are unique keys on our side. But for this case there is a user entity and registration process.
 So there are extra two EP; ```register``` and ```login```.
 
-#### /register
-
+### /register
 For registration you required fields are ```phoneNumber```, ```email``` and ```password```
 
-#### /login
-
+### /login
 Once you registered, you will have to login with your email and password.
 Login response will be your token.
 You will have to use that token for the other requests.
 
 This token needs to be used as Bearer token in Postman but without the Bearer keyword. Postman collection can be found under the postman folder.
+
+### Create Wallet
+By default, you won't have a wallet when you register or login. So, first you will have to create a wallet. Default account can be specified in the request.
+
+### Create Wallet Account
+Only available currencies for now are TRY, USD and EUR. You won't be able to create others.
 
 
 ## Setup
